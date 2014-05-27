@@ -1,0 +1,6 @@
+
+To debug MIDI pipe, do a:
+
+$ CFLAGS=-DDBGDUMP make prog
+then
+$ make dumpstream

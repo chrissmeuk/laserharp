@@ -8,13 +8,13 @@ enum {
 };
 
 enum {
-	NOTE_C4 = 60,
-	NOTE_D4 = 62,
-	NOTE_E4 = 64,
-	NOTE_F4 = 65,
-	NOTE_G4 = 67,
-	NOTE_A4 = 69,
-	NOTE_B4 = 71
+	NOTE_C4 = 0x3c,
+	NOTE_D4 = 0x3e,
+	NOTE_E4 = 0x40,
+	NOTE_F4 = 0x41,
+	NOTE_G4 = 0x43,
+	NOTE_A4 = 0x45,
+	NOTE_B4 = 0x47
 };
 
 enum {
@@ -27,16 +27,16 @@ enum {
 
 // --------------------------------------------------------------------
 // Intialise UART and configure for_SEMI     1
-#define DUR_MINIM    2
-#define DUR_CROCHET  4
-#define DUR_QUAVER   8
-
 // --------------------------------------------------------------------
 void
 uart_init()
 {
 #undef BAUD
+#ifdef DBGDUMP
+#define BAUD 9600
+#else
 #define BAUD 31250
+#endif
 #include <util/setbaud.h>
 	UBRR0H = UBRRH_VALUE;
 	UBRR0L = UBRRL_VALUE;
@@ -94,13 +94,13 @@ main()
 
 	while (1) {
 		/* up */
-		for (i = 0; i < 7; i++) {
+		for (i = 0; i <= 6; i++) {
 			midi_send_noteon(0, scalea[i], 0xff);
 			_delay_ms(NOTE_DELAY);
 			midi_send_noteoff(0, scalea[i]); 
 		}
 		/* down */
-		for (i = 7; i >= 0; i--) {
+		for (i = 6; i >= 0; i--) {
 			midi_send_noteon(0, scalea[i], 0xff);
 			_delay_ms(NOTE_DELAY);
 			midi_send_noteoff(0, scalea[i]); 
