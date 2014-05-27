@@ -1,0 +1,19 @@
+README
+======
+
+
+DEBUGGING
+---------
+
+To debug the MIDI stream we dump it to the host machine by setting the
+UART on the device to 9600 baud and reading the TTY and piping through
+hexdump.
+
+To build a debug build with UART set to 9600, do the following:
+
+	$ CFLAGS=-DDBGDUMP make prog
+
+Then to dump the stream to the terminal:
+
+	$ make dumpstream
+
