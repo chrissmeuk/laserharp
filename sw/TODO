@@ -1,0 +1,2 @@
+
+- Yank BAUD settings into midi_init and make uart_init generic

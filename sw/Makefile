@@ -1,12 +1,23 @@
+CC=avr-gcc
+OBJCOPY=avr-objcopy
+CFLAGS=-c -Os -DF_CPU=16000000 -mmcu=atmega328p
+LDFLAGS=-mmcu=atmega328p
 DEVICE=/dev/ttyACM0
+SOURCES=laserharp.c uart.c midi.c kernel.c
+OBJECTS=$(SOURCES:.c=.o)
+IMAGE=laserharp
 
-laserharp: laserharp.c
-	avr-gcc $(CFLAGS) -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o laserharp.o laserharp.c
-	avr-gcc -mmcu=atmega328p laserharp.o -o laserharp
-	avr-objcopy -O ihex -R .eeprom laserharp laserharp.hex	
+all: $(SOURCES) $(IMAGE)
+	
+$(IMAGE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(OBJCOPY) -O ihex -R .eeprom $(IMAGE) $(IMAGE).hex
 
-prog: laserharp
-	avrdude -F -V -c arduino -p ATMEGA328P -P $(DEVICE) -b 115200 -U flash:w:laserharp.hex
+.c.o:
+	$(CC) $(CFLAGS) $< -o $@
+
+prog: $(IMAGE)
+	avrdude -F -V -c arduino -p ATMEGA328P -P $(DEVICE) -b 115200 -U flash:w:$(IMAGE).hex
 
 dumpstream:
 	stty -F $(DEVICE) cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts	
