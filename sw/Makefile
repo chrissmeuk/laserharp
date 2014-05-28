@@ -1,9 +1,9 @@
 CC=avr-gcc
 OBJCOPY=avr-objcopy
-CFLAGS=-c -Os -DF_CPU=16000000 -mmcu=atmega328p
+override CFLAGS += -c -Os -DF_CPU=16000000 -mmcu=atmega328p
 LDFLAGS=-mmcu=atmega328p
 DEVICE=/dev/ttyACM0
-SOURCES=laserharp.c uart.c midi.c kernel.c
+SOURCES=laserharp.c midi.c
 OBJECTS=$(SOURCES:.c=.o)
 IMAGE=laserharp
 

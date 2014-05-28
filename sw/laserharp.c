@@ -2,7 +2,6 @@
 // (c) 2014 Chris Smith <me@chriss.me.uk>
 
 #include <util/delay.h>
-#include "uart.h"
 #include "midi.h"
 
 enum {
